@@ -34,7 +34,6 @@ while True:
         people.day()
 
 
-
 class State:
     def writeprogram(self):
         pass
