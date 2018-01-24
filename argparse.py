@@ -36,7 +36,6 @@ def f():
 
 import threading
 import time
-import sys
 
 class test(threading.Thread):
     def __init__(self,name,delay):
