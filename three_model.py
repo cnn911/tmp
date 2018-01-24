@@ -20,7 +20,6 @@ from collections import defaultdict
 import message
 from message import observable
 
-
 @observable
 class Foo(object):
     def __init__(self,name):
