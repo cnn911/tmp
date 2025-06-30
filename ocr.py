@@ -1,6 +1,6 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
-class Request(BaseHTTPRequestHandler):
+class (BaseHTTPRequestHandler):
     #通过类继承，新定义类
     timeout = 5
     server_version = 'Apache'
