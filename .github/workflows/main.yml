@@ -23,7 +23,7 @@ jobs:
 
       - name: Install CodiumAI
         run: |
-          pip install codiumai
+          pip install codiumai-cli
 
       - name: Generate AI tests
         run: |
