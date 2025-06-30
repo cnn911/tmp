@@ -2,29 +2,22 @@ name: AI Generate & Run Tests
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened] # PR每次更新都触发
-
+    types: [opened, reopened, ready_for_review, synchronize]
+  issue_comment:
 jobs:
-  generate-and-test:
+  pr_agent_job:
     runs-on: ubuntu-latest
-
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: write
+    name: Run pr agent on every pull request, respond to user comments
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-
-      - name: Install CodiumAI
-        run: |
-          pip install codiumai-cli
-
-      - name: Generate AI tests
-        run: |
-          codiumai generate --path . --output tests/ai
+      - name: PR Agent action step
+        id: pragent
+        uses: qodo-ai/pr-agent@main
+        env:
+          OPENROUTER_KEY: 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
+          GITHUB_TOKEN: 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
+          PR_TEST.FILE: test2.py
+          PR_TEST.TESTING_FRAMEWORK: pytest
