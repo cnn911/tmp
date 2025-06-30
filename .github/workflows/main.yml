@@ -17,7 +17,7 @@ jobs:
         id: pragent
         uses: qodo-ai/pr-agent@main
         env:
-          OPENROUTER_KEY: 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
+          OPENROUTER_KEY: ${{ secrets.OPENROUTER_KEY }}
           GITHUB_TOKEN: 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
           PR_TEST.FILE: test2.py
           PR_TEST.TESTING_FRAMEWORK: pytest
