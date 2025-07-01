@@ -1,8 +1,7 @@
 name: Diff Test Suite Agent
 on:
   pull_request:
-    branches: [main, develop, test]
-
+    types: [opened, synchronize, reopened]
 jobs:
   generate-tests:
     runs-on: ubuntu-latest
