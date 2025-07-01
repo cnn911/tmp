@@ -1,23 +1,29 @@
-name: AI Generate & Run Tests
-
+name: Diff Test Suite Agent
 on:
   pull_request:
-    types: [opened, reopened, ready_for_review, synchronize]
-  issue_comment:
+    branches: [main, develop, test]
+
 jobs:
-  pr_agent_job:
+  generate-tests:
     runs-on: ubuntu-latest
     permissions:
-      issues: write
-      pull-requests: write
       contents: write
-    name: Run pr agent on every pull request, respond to user comments
+      pull-requests: write
+
     steps:
-      - name: PR Agent action step
-        id: pragent
-        uses: qodo-ai/pr-agent@main
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run diff test suite agent
+        uses: qodo-ai/qodo-gen-cli@v1
         env:
-          OPENROUTER_KEY: ${{ secrets.OPENROUTER_KEY }}
-          GITHUB_TOKEN: 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
-          PR_TEST.FILE: test2.py
-          PR_TEST.TESTING_FRAMEWORK: pytest
+          QODO_API_KEY: ${{ secrets.QODO_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          prompt: diff-test-suite
+          key-value-pairs: |
+            base_branch=${{ github.base_ref }}
+            files_to_ignore=package-lock.json,*.md
+            run_tests=true
