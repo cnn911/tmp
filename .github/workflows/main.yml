@@ -1,56 +1,25 @@
-# name: Diff Test Suite Agent
-# on:
-#   pull_request:
-#     types: [opened, synchronize, reopened]
-#     branches: [main, develop, test]
-
-# jobs:
-#   generate-tests:
-#     runs-on: ubuntu-latest
-
-#     steps:
-#       - name: Checkout repository
-#         uses: actions/checkout@v4
-
-#       - name: Run diff test suite agent
-#         uses: qodo-ai/qodo-gen-cli@v1
-#         env:
-#           QODO_API_KEY: ${{ secrets.QODO_API_KEY }}
-#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#         with:
-#           prompt: diff-test-suite
-#           agent-file: agent.toml
-#           key-value-pairs: |
-#             base_branch=test
-#             files_to_ignore=package-lock.json,*.md
-#             run_tests=true
-name: AI Generate & Run Tests
-
+name: Diff Test Suite Agent
 on:
   pull_request:
     types: [opened, synchronize, reopened]
 
 jobs:
-  generate-and-test:
+  generate-and-tests:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Run diff test suite agent
+        uses: qodo-ai/qodo-gen-cli@v1
+        env:
+          QODO_API_KEY: ${{ secrets.QODO_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          python-version: '3.10'
-
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-
-      - name: Install pynguin
-        run: pip install pynguin
-
-      - name: Generate AI tests
-        run: pynguin --project-path=. --output-path=tests/generated
-
-      - name: Run all tests
-        run: pytest tests/
+          prompt: diff-test-suite
+          agent-file: agent.toml
+          key-value-pairs: |
+            base_branch=test
+            files_to_ignore=package-lock.json,*.md
+            run_tests=true
