@@ -1,32 +1,29 @@
-name: Test Coverage Bot
+name: Diff Test Suite Agent
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
-
-permissions:
-  pull-requests: write
-  contents: write
-
+    branches: [main, develop, test]
 
 jobs:
-  coverage:
-    # Only run if:
-    # 1. PR has the qodo-cover label
-    # 2. PR is open (not closed or draft)
+  generate-tests:
     runs-on: ubuntu-latest
-    
+    permissions:
+      contents: write
+      pull-requests: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        
-      - name: Run Qodo Coverage Bot
-        uses: qodo-ai/qodo-gen-cli@v1
         with:
-          prompt: "qodo-cover"
-          # agentfile: "${{ github.workspace }}/agent.toml"
-          key-value-pairs: |
-            desired_coverage=50
+          fetch-depth: 0
+
+      - name: Run diff test suite agent
+        uses: qodo-ai/qodo-gen-cli@v1
         env:
           QODO_API_KEY: ${{ secrets.QODO_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
+        with:
+          prompt: diff-test-suite
+          key-value-pairs: |
+            base_branch=test
+            files_to_ignore=package-lock.json,*.md
+            run_tests=true
