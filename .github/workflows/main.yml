@@ -23,6 +23,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           prompt: diff-test-suite
+          agent-file: agent.toml
           key-value-pairs: |
             base_branch=test
             files_to_ignore=package-lock.json,*.md
