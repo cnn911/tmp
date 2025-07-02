@@ -1,20 +1,16 @@
 name: Diff Test Suite Agent
 on:
   pull_request:
+    types: [opened, synchronize, reopened]
     branches: [main, develop, test]
 
 jobs:
   generate-tests:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Run diff test suite agent
         uses: qodo-ai/qodo-gen-cli@v1
